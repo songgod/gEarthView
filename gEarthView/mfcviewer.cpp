@@ -9,6 +9,11 @@
 #include <osgDB/ReadFile>
 #include <OpenThreads/Thread>
 #include <OpenThreads/Block>
+#include <osgEarthUtil/EarthManipulator>
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
 
 class RenderThread : public OpenThreads::Thread
 {
@@ -57,7 +62,7 @@ public:
 
 
 
-MFCViewer::MFCViewer(HWND hWnd) : _hWnd(hWnd),_viewer(NULL),_renderthread(NULL)
+MFCViewer::MFCViewer(HWND hWnd) : _hWnd(hWnd),_viewer(NULL),_renderthread(NULL), _mapnode(NULL)
 {
 
 }
@@ -85,7 +90,18 @@ MFCViewer::~MFCViewer()
 	}
 }
 
-void MFCViewer::Pause()
+void MFCViewer::start()
+{
+	if (_renderthread)
+		return;
+	//启动渲染线程
+	RenderThread* rt = new RenderThread(this);
+	rt->start();
+	rt->pause(false);
+	_renderthread = (void*)(rt);
+}
+
+void MFCViewer::pause()
 {
 	if (_renderthread)
 	{
@@ -93,7 +109,7 @@ void MFCViewer::Pause()
 	}
 }
 
-void MFCViewer::Resume()
+void MFCViewer::resume()
 {
 	if (_renderthread)
 	{
@@ -101,16 +117,23 @@ void MFCViewer::Resume()
 	}
 }
 
-void MFCViewer::InitOSG()
+bool MFCViewer::init(const std::string& file)
 {
-	InitSceneGraph();
-	InitCameraConfig();
+	if (_viewer != NULL)
+		return true;
 
-	//启动渲染线程
-	RenderThread* rt = new RenderThread(this);
-	rt->start();
-	rt->pause(false);
-	_renderthread = (void*)(rt);
+	osg::ref_ptr<osg::Node> node = osgDB::readNodeFile(file);
+	if (!node)
+		return false;
+
+	osgEarth::MapNode* mapnode = osgEarth::MapNode::get(node);
+	if (!mapnode)
+		return false;
+	_mapnode = mapnode;
+
+	InitCameraConfig(node);
+
+	return true;
 }
 
 void MFCViewer::frame()
@@ -119,24 +142,6 @@ void MFCViewer::frame()
 		return;
 
 	_viewer->frame();
-}
-
-void MFCViewer::clearScene()
-{
-	if (!_realroot)
-		return;
-
-	_realroot->removeChildren(0, _realroot->getNumChildren());
-}
-
-void MFCViewer::InitSceneGraph(void)
-{
-	_sceneroot = new osg::Group;
-	_realroot = new osg::Group;
-	_realroot->setDataVariance(osg::Object::DYNAMIC);
-	_asisroot = new osg::Group;
-	_sceneroot->addChild(_realroot);
-	_sceneroot->addChild(_asisroot);
 }
 
 void MFCViewer::setClearColor(const osg::Vec4& color)
@@ -149,7 +154,7 @@ const osg::Vec4& MFCViewer::getClearColor() const
 	return _viewer->getCamera()->getClearColor();
 }
 
-void MFCViewer::InitCameraConfig(void)
+void MFCViewer::InitCameraConfig(osg::Node* node)
 {
 	RECT rect;
 
@@ -206,10 +211,25 @@ void MFCViewer::InitCameraConfig(void)
 	_viewer->getCamera()->setCullingMode(_viewer->getCamera()->getCullingMode() & ~osg::CullSettings::SMALL_FEATURE_CULLING);
 
 	// Set the Scene Data
-	_viewer->setSceneData(_sceneroot.get());
+	osg::Group* g = new osg::Group();
+	g->addChild(node);
+	_viewer->setSceneData(g);
 
-	// Add the Camera Manipulator to the Viewer
-	_viewer->setCameraManipulator(new osgGA::TrackballManipulator());
+	_viewer->getDatabasePager()->setUnrefImageDataAfterApplyPolicy(true, false);
+
+	// thread-safe initialization of the OSG wrapper manager. Calling this here
+	// prevents the "unsupported wrapper" messages from OSG
+	osgDB::Registry::instance()->getObjectWrapperManager()->findWrapper("osg::Image");
+
+	// install our default manipulator (do this before calling load)
+	_viewer->setCameraManipulator(new osgEarth::Util::EarthManipulator());
+
+	// disable the small-feature culling
+	_viewer->getCamera()->setSmallFeatureCullingPixelSize(-1.0f);
+
+	// set a near/far ratio that is smaller than the default. This allows us to get
+	// closer to the ground without near clipping. If you need more, use --logdepth
+	_viewer->getCamera()->setNearFarRatio(0.0001);
 
 	_viewer->addEventHandler(new osgViewer::StatsHandler());
 	_viewer->addEventHandler(new osgGA::StateSetManipulator(camera->getOrCreateStateSet()));

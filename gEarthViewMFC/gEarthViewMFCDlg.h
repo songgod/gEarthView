@@ -32,4 +32,5 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CEarthView m_eView;
+	afx_msg void OnBnClickedButton1();
 };

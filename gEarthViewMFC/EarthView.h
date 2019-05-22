@@ -41,21 +41,17 @@ public:
 	{
 		InvokeHelper(DISPID_ABOUTBOX, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
 	}
-	long Open(LPCTSTR Url)
-	{
-		long result;
-		static BYTE parms[] = VTS_BSTR ;
-		InvokeHelper(0x1, DISPATCH_METHOD, VT_I4, (void*)&result, parms, Url);
-		return result;
-	}
-	void Close()
-	{
-		InvokeHelper(0x2, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
-	}
 	void Flyto(double lat, double lng, double alt)
 	{
 		static BYTE parms[] = VTS_R8 VTS_R8 VTS_R8 ;
-		InvokeHelper(0x4, DISPATCH_METHOD, VT_EMPTY, NULL, parms, lat, lng, alt);
+		InvokeHelper(0x2, DISPATCH_METHOD, VT_EMPTY, NULL, parms, lat, lng, alt);
+	}
+	long Open(LPCTSTR url)
+	{
+		long result;
+		static BYTE parms[] = VTS_BSTR ;
+		InvokeHelper(0x3, DISPATCH_METHOD, VT_I4, (void*)&result, parms, url);
+		return result;
 	}
 
 

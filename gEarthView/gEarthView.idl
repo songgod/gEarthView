@@ -19,14 +19,13 @@ library gEarthViewLib
 	]
 	dispinterface _DgEarthView
 	{
-		properties:
-			[id(3)] BSTR Url;
+	properties:
+
 	methods:
 
 			[id(DISPID_ABOUTBOX)] void AboutBox();
-			[id(1)] LONG Open(BSTR url);
-			[id(2)] void Close();
-			[id(4)] void Flyto(DOUBLE lat, DOUBLE lng, DOUBLE alt);
+			[id(2)] void Flyto(DOUBLE lat, DOUBLE lng, DOUBLE alt);
+			[id(3)] LONG Open(BSTR url);
 	};
 
 	//  CgEarthViewCtrl 的事件调度接口

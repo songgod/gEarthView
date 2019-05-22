@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #include "gEarthViewMFC.h"
 #include "gEarthViewMFCDlg.h"
+#include "EarthView.h"
+#include "EarthView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -65,6 +65,7 @@ BEGIN_MESSAGE_MAP(CgEarthViewMFCDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON1, &CgEarthViewMFCDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -153,3 +154,18 @@ HCURSOR CgEarthViewMFCDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CgEarthViewMFCDlg::OnBnClickedButton1()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CFileDialog openDlg(TRUE, "earth File(*.earth)|*.earth", NULL,
+
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+
+		"earth File(*.earth)|*.earth||", this);
+	if (openDlg.DoModal() == IDOK)
+	{
+		m_eView.Open(openDlg.GetPathName());
+	}
+}

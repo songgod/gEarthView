@@ -5,6 +5,7 @@
 #include "gEarthViewCtrl.h"
 #include "gEarthViewPropPage.h"
 #include "afxdialogex.h"
+#include <osgDB/ReadFile>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -25,10 +26,8 @@ END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CgEarthViewCtrl, COleControl)
 	DISP_FUNCTION_ID(CgEarthViewCtrl, "AboutBox", DISPID_ABOUTBOX, AboutBox, VT_EMPTY, VTS_NONE)
-	DISP_FUNCTION_ID(CgEarthViewCtrl, "Open", dispidOpen, Open, VT_I4, VTS_BSTR)
-	DISP_FUNCTION_ID(CgEarthViewCtrl, "Close", dispidClose, Close, VT_EMPTY, VTS_NONE)
-	DISP_PROPERTY_NOTIFY_ID(CgEarthViewCtrl, "Url", dispidUrl, m_Url, OnUrlChanged, VT_BSTR)
 	DISP_FUNCTION_ID(CgEarthViewCtrl, "Flyto", dispidFlyto, Flyto, VT_EMPTY, VTS_R8 VTS_R8 VTS_R8)
+	DISP_FUNCTION_ID(CgEarthViewCtrl, "Open", dispidOpen, Open, VT_I4, VTS_BSTR)
 END_DISPATCH_MAP()
 
 // 事件映射
@@ -109,6 +108,11 @@ CgEarthViewCtrl::CgEarthViewCtrl():m_Viewer(NULL)
 CgEarthViewCtrl::~CgEarthViewCtrl()
 {
 	// TODO:  在此清理控件的实例数据。
+	if (m_Viewer)
+	{
+		delete m_Viewer;
+		m_Viewer = NULL;
+	}
 }
 
 // CgEarthViewCtrl::OnDraw - 绘图函数
@@ -157,34 +161,6 @@ void CgEarthViewCtrl::AboutBox()
 // CgEarthViewCtrl 消息处理程序
 
 
-LONG CgEarthViewCtrl::Open(LPCTSTR url)
-{
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-
-	// TODO: 在此添加调度处理程序代码
-
-	return 0;
-}
-
-
-void CgEarthViewCtrl::Close()
-{
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-
-	// TODO: 在此添加调度处理程序代码
-}
-
-
-void CgEarthViewCtrl::OnUrlChanged()
-{
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-
-	// TODO: 在此添加属性处理程序代码
-
-	SetModifiedFlag();
-}
-
-
 void CgEarthViewCtrl::Flyto(DOUBLE lat, DOUBLE lng, DOUBLE alt)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -206,11 +182,7 @@ void CgEarthViewCtrl::OnDestroy()
 	COleControl::OnDestroy();
 
 	// TODO: 在此处添加消息处理程序代码
-	if (m_Viewer)
-	{
-		delete m_Viewer;
-		m_Viewer = NULL;
-	}
+
 }
 
 
@@ -220,7 +192,29 @@ int CgEarthViewCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	// TODO:  在此添加您专用的创建代码
-	m_Viewer = new MFCViewer(m_hWnd);
-	m_Viewer->InitOSG();
+	return 0;
+}
+
+
+LONG CgEarthViewCtrl::Open(LPCTSTR url)
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+	// TODO: 在此添加调度处理程序代码
+	MFCViewer* view = new MFCViewer(m_hWnd);
+	if (!view->init(url))
+	{
+		delete view;
+		return -1;
+	}
+		
+
+	if (m_Viewer)
+	{
+		delete m_Viewer;
+		m_Viewer = NULL;
+	}
+	m_Viewer = view;
+	m_Viewer->start();
 	return 0;
 }

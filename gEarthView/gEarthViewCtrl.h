@@ -47,17 +47,12 @@ protected:
 // 调度和事件 ID
 public:
 	enum {
-		dispidFlyto = 4L,
-		dispidUrl = 3,
-		dispidClose = 2L,
-		dispidOpen = 1L
+		dispidOpen = 3L,
+		dispidFlyto = 2L
 	};
 protected:
-	LONG Open(LPCTSTR url);
-	void Close();
-	void OnUrlChanged();
-	CString m_Url;
 	void Flyto(DOUBLE lat, DOUBLE lng, DOUBLE alt);
+	LONG Open(LPCTSTR url);
 public:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnDestroy();

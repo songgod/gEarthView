@@ -4,7 +4,7 @@
 
 
  /* File created by MIDL compiler version 8.00.0603 */
-/* at Wed May 22 11:25:16 2019
+/* at Wed May 22 17:21:54 2019
  */
 /* Compiler settings for gEarthView.idl:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.00.0603 
