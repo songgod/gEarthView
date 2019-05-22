@@ -1,4 +1,5 @@
 #pragma once
+#include "mfcviewer.h"
 
 // gEarthViewCtrl.h : CgEarthViewCtrl ActiveX 控件类的声明。
 
@@ -18,6 +19,10 @@ public:
 	virtual void OnDraw(CDC* pdc, const CRect& rcBounds, const CRect& rcInvalid);
 	virtual void DoPropExchange(CPropExchange* pPX);
 	virtual void OnResetState();
+
+protected:
+
+	MFCViewer *m_Viewer;
 
 // 实现
 protected:
@@ -53,5 +58,9 @@ protected:
 	void OnUrlChanged();
 	CString m_Url;
 	void Flyto(DOUBLE lat, DOUBLE lng, DOUBLE alt);
+public:
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnDestroy();
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 };
 

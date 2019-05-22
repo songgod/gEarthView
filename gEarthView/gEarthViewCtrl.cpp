@@ -16,6 +16,9 @@ IMPLEMENT_DYNCREATE(CgEarthViewCtrl, COleControl)
 
 BEGIN_MESSAGE_MAP(CgEarthViewCtrl, COleControl)
 	ON_OLEVERB(AFX_IDS_VERB_PROPERTIES, OnProperties)
+	ON_WM_ERASEBKGND()
+	ON_WM_DESTROY()
+	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 // 调度映射
@@ -95,7 +98,7 @@ BOOL CgEarthViewCtrl::CgEarthViewCtrlFactory::UpdateRegistry(BOOL bRegister)
 
 // CgEarthViewCtrl::CgEarthViewCtrl - 构造函数
 
-CgEarthViewCtrl::CgEarthViewCtrl()
+CgEarthViewCtrl::CgEarthViewCtrl():m_Viewer(NULL)
 {
 	InitializeIIDs(&IID_DgEarthView, &IID_DgEarthViewEvents);
 	// TODO:  在此初始化控件的实例数据。
@@ -117,8 +120,8 @@ void CgEarthViewCtrl::OnDraw(
 		return;
 
 	// TODO:  用您自己的绘图代码替换下面的代码。
-	pdc->FillRect(rcBounds, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
-	pdc->Ellipse(rcBounds);
+	//pdc->FillRect(rcBounds, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
+	//pdc->Ellipse(rcBounds);
 }
 
 // CgEarthViewCtrl::DoPropExchange - 持久性支持
@@ -187,4 +190,37 @@ void CgEarthViewCtrl::Flyto(DOUBLE lat, DOUBLE lng, DOUBLE alt)
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	// TODO: 在此添加调度处理程序代码
+}
+
+
+BOOL CgEarthViewCtrl::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	return TRUE;
+}
+
+
+void CgEarthViewCtrl::OnDestroy()
+{
+	COleControl::OnDestroy();
+
+	// TODO: 在此处添加消息处理程序代码
+	if (m_Viewer)
+	{
+		delete m_Viewer;
+		m_Viewer = NULL;
+	}
+}
+
+
+int CgEarthViewCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (COleControl::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	// TODO:  在此添加您专用的创建代码
+	m_Viewer = new MFCViewer(m_hWnd);
+	m_Viewer->InitOSG();
+	return 0;
 }
