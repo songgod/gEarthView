@@ -1,0 +1,55 @@
+// gEarthView.idl : ActiveX 控件项目的类型库源。
+
+// 此文件将由 MIDL 编译器工具处理以
+// 产生类型库(gEarthView.tlb)，该类型库将成为
+// gEarthView.ocx.
+
+#include <olectl.h>
+#include <idispids.h>
+
+[ uuid(16DA3DA1-53F5-44D6-97D3-CF614A79CA80), version(1.0),
+  control ]
+library gEarthViewLib
+{
+	importlib(STDOLE_TLB);
+
+	//  CgEarthViewCtrl 的主调度接口
+	[ 
+		uuid(C8C4DA98-AC80-497D-904F-B36429098942)	
+	]
+	dispinterface _DgEarthView
+	{
+		properties:
+			[id(3)] BSTR Url;
+	methods:
+
+			[id(DISPID_ABOUTBOX)] void AboutBox();
+			[id(1)] LONG Open(BSTR url);
+			[id(2)] void Close();
+			[id(4)] void Flyto(DOUBLE lat, DOUBLE lng, DOUBLE alt);
+	};
+
+	//  CgEarthViewCtrl 的事件调度接口
+
+	[ 
+		uuid(71F9046B-9962-41E5-AFE2-A1C6BBB93517)	
+	]
+	dispinterface _DgEarthViewEvents
+	{
+		properties:
+			//  事件接口没有任何属性
+
+		methods:
+	};
+
+	//  CgEarthViewCtrl 的类信息
+	[
+		uuid(F7A56A10-D364-43B3-8516-5A4D8E9C847B)
+	]
+	coclass gEarthView
+	{
+		[default] dispinterface _DgEarthView;
+		[default, source] dispinterface _DgEarthViewEvents;
+	};
+
+};

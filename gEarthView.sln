@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gEarthViewMFC", "gEarthViewMFC\gEarthViewMFC.vcxproj", "{BC36D3D6-12E3-4E2C-84F1-01982D620DB2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gEarthView", "gEarthView\gEarthView.vcxproj", "{30EC987C-8D84-4040-92CD-C22FDF65AF0A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BC36D3D6-12E3-4E2C-84F1-01982D620DB2}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{BC36D3D6-12E3-4E2C-84F1-01982D620DB2}.Debug|x64.ActiveCfg = Debug|x64
+		{BC36D3D6-12E3-4E2C-84F1-01982D620DB2}.Debug|x64.Build.0 = Debug|x64
+		{BC36D3D6-12E3-4E2C-84F1-01982D620DB2}.Debug|x86.ActiveCfg = Debug|Win32
+		{BC36D3D6-12E3-4E2C-84F1-01982D620DB2}.Debug|x86.Build.0 = Debug|Win32
+		{BC36D3D6-12E3-4E2C-84F1-01982D620DB2}.Release|Any CPU.ActiveCfg = Release|Win32
+		{BC36D3D6-12E3-4E2C-84F1-01982D620DB2}.Release|x64.ActiveCfg = Release|x64
+		{BC36D3D6-12E3-4E2C-84F1-01982D620DB2}.Release|x64.Build.0 = Release|x64
+		{BC36D3D6-12E3-4E2C-84F1-01982D620DB2}.Release|x86.ActiveCfg = Release|Win32
+		{BC36D3D6-12E3-4E2C-84F1-01982D620DB2}.Release|x86.Build.0 = Release|Win32
+		{30EC987C-8D84-4040-92CD-C22FDF65AF0A}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{30EC987C-8D84-4040-92CD-C22FDF65AF0A}.Debug|x64.ActiveCfg = Debug|x64
+		{30EC987C-8D84-4040-92CD-C22FDF65AF0A}.Debug|x64.Build.0 = Debug|x64
+		{30EC987C-8D84-4040-92CD-C22FDF65AF0A}.Debug|x86.ActiveCfg = Debug|Win32
+		{30EC987C-8D84-4040-92CD-C22FDF65AF0A}.Debug|x86.Build.0 = Debug|Win32
+		{30EC987C-8D84-4040-92CD-C22FDF65AF0A}.Release|Any CPU.ActiveCfg = Release|Win32
+		{30EC987C-8D84-4040-92CD-C22FDF65AF0A}.Release|x64.ActiveCfg = Release|x64
+		{30EC987C-8D84-4040-92CD-C22FDF65AF0A}.Release|x64.Build.0 = Release|x64
+		{30EC987C-8D84-4040-92CD-C22FDF65AF0A}.Release|x86.ActiveCfg = Release|Win32
+		{30EC987C-8D84-4040-92CD-C22FDF65AF0A}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

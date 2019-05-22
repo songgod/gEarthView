@@ -1,0 +1,109 @@
+/* -*-c++-*- OpenSceneGraph - Copyright (C) 1998-2009 Robert Osfield
+ *
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+ * (at your option) any later version.  The full license is in LICENSE file
+ * included with this distribution, and on the openscenegraph.org website.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * OpenSceneGraph Public License for more details.
+*/
+
+#ifndef QWEBVIEWIMAGE
+#define QWEBVIEWIMAGE
+
+// make sure this header isn't built as par of osgQt, leaving it to applications to build
+#if !defined(OSGQT_LIBRARY) && !defined(OSG_LIBRARY_STATIC)
+
+#if QT_VERSION >= 0x050000
+# include <QtWebEngineWidgets>
+#else
+# include <QtWebKit>
+#endif
+
+
+#include <osgWidget/Browser>
+#include <osgQt/QGraphicsViewAdapter>
+#include <osgQt/Version>
+
+namespace osgQt
+{
+
+class QWebEngineViewImage : public osgWidget::BrowserImage
+{
+    public:
+
+        QWebEngineViewImage()
+        {
+            // make sure we have a valid QApplication before we start creating widgets.
+            getOrCreateQApplication();
+
+            _webEngineView = new QWebEngineView;
+
+            _webEnginePage = new QWebEnginePage;
+            _webEnginePage->settings()->setAttribute(QWebEngineSettings::JavascriptEnabled, true);
+            _webEnginePage->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+
+            _webEngineView->setPage(_webEnginePage);
+
+            _adapter = new QGraphicsViewAdapter(this, _webEngineView.data());
+        }
+
+        virtual void navigateTo(const std::string& url)
+        {
+            _webEngineView->load(QUrl(url.c_str()));
+        }
+
+        QWebEngineView* getQWebEngineView() { return _webEngineView; }
+        QWebEnginePage* getQWebEnginePage() { return _webEnginePage; }
+        QGraphicsViewAdapter* getQGraphicsViewAdapter() { return _adapter; }
+
+        void clearWriteBuffer()
+        {
+            _adapter->clearWriteBuffer();
+        }
+
+        void render()
+        {
+            if (_adapter->requiresRendering()) _adapter->render();
+        }
+
+        virtual bool requiresUpdateCall() const { return true; }
+        virtual void update( osg::NodeVisitor* nv ) { render(); }
+        
+        virtual bool sendFocusHint(bool focus)
+        {
+            QFocusEvent event(focus ? QEvent::FocusIn : QEvent::FocusOut, Qt::OtherFocusReason);
+            QCoreApplication::sendEvent(_webEnginePage, &event);
+            return true;
+        }
+
+        virtual bool sendPointerEvent(int x, int y, int buttonMask)
+        {
+            return _adapter->sendPointerEvent(x,y,buttonMask);
+        }
+
+        virtual bool sendKeyEvent(int key, bool keyDown)
+        {
+            return QWebEngineViewImage::_adapter->sendKeyEvent(key, keyDown);
+        }
+
+        virtual void setFrameLastRendered(const osg::FrameStamp* frameStamp)
+        {
+            _adapter->setFrameLastRendered(frameStamp);
+        }
+
+    protected:
+
+        QPointer<QGraphicsViewAdapter>  _adapter;
+        QPointer<QWebEngineView>              _webEngineView;
+        QPointer<QWebEnginePage>              _webEnginePage;
+};
+
+}
+
+#endif
+
+#endif
