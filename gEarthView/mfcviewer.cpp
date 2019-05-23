@@ -21,6 +21,7 @@ private:
 
 	MFCViewer* _viewer;
 	OpenThreads::Block _block;
+	OpenThreads::Mutex _mutex;
 
 public:
 	RenderThread::RenderThread(MFCViewer* viewer) : _viewer(viewer)
@@ -40,6 +41,7 @@ public:
 	void pause(bool bPause)
 	{
 		_block.set(!bPause);
+		OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 	}
 
 	void RenderThread::run()
@@ -49,13 +51,13 @@ public:
 			!_viewer->getViewer()->done())
 		{
 			_block.block();
-			//double minFrameTime = 1.0;
-			//osg::Timer_t startFrameTick = osg::Timer::instance()->tick();
-			_viewer->getViewer()->frame();
+
+			{
+				OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+				_viewer->getViewer()->frame();
+			}
+			
 			//OpenThreads::Thread::microSleep(100);
-			//osg::Timer_t endFrameTick = osg::Timer::instance()->tick();
-			//double frameTime = osg::Timer::instance()->delta_s(startFrameTick, endFrameTick);
-			//if (frameTime < minFrameTime) OpenThreads::Thread::microSleep(static_cast<unsigned int>(1000000.0*(minFrameTime-frameTime)));
 		}
 	}
 };
@@ -117,12 +119,17 @@ void MFCViewer::resume()
 	}
 }
 
-bool MFCViewer::init(const std::string& file)
+void MFCViewer::init()
 {
 	if (_viewer != NULL)
-		return true;
+		return;
 
-	osg::ref_ptr<osg::Node> node = osgDB::readNodeFile(file);
+	InitCameraConfig();
+}
+
+bool MFCViewer::open(const std::string& file)
+{
+	osg::Node* node = osgDB::readNodeFile(file);
 	if (!node)
 		return false;
 
@@ -131,8 +138,10 @@ bool MFCViewer::init(const std::string& file)
 		return false;
 	_mapnode = mapnode;
 
-	InitCameraConfig(node);
-
+	pause();
+	_root->removeChildren(0, _root->getNumChildren());
+	_root->addChild(node);
+	resume();
 	return true;
 }
 
@@ -154,7 +163,7 @@ const osg::Vec4& MFCViewer::getClearColor() const
 	return _viewer->getCamera()->getClearColor();
 }
 
-void MFCViewer::InitCameraConfig(osg::Node* node)
+void MFCViewer::InitCameraConfig()
 {
 	RECT rect;
 
@@ -211,9 +220,9 @@ void MFCViewer::InitCameraConfig(osg::Node* node)
 	_viewer->getCamera()->setCullingMode(_viewer->getCamera()->getCullingMode() & ~osg::CullSettings::SMALL_FEATURE_CULLING);
 
 	// Set the Scene Data
-	osg::Group* g = new osg::Group();
-	g->addChild(node);
-	_viewer->setSceneData(g);
+	_root = new osg::Group();
+	_root->setDataVariance(osg::Object::DYNAMIC);
+	_viewer->setSceneData(_root);
 
 	_viewer->getDatabasePager()->setUnrefImageDataAfterApplyPolicy(true, false);
 

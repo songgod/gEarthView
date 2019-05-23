@@ -124,8 +124,8 @@ void CgEarthViewCtrl::OnDraw(
 		return;
 
 	// TODO:  用您自己的绘图代码替换下面的代码。
-	//pdc->FillRect(rcBounds, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
-	//pdc->Ellipse(rcBounds);
+	if(!m_Viewer)
+		pdc->FillRect(rcBounds, CBrush::FromHandle((HBRUSH)GetStockObject(WHITE_BRUSH)));
 }
 
 // CgEarthViewCtrl::DoPropExchange - 持久性支持
@@ -173,6 +173,9 @@ BOOL CgEarthViewCtrl::OnEraseBkgnd(CDC* pDC)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 
+	if (!m_Viewer)
+		return COleControl::OnEraseBkgnd(pDC);
+
 	return TRUE;
 }
 
@@ -192,6 +195,9 @@ int CgEarthViewCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	// TODO:  在此添加您专用的创建代码
+	m_Viewer = new MFCViewer(m_hWnd);
+	m_Viewer->init();
+	m_Viewer->start();
 	return 0;
 }
 
@@ -201,20 +207,8 @@ LONG CgEarthViewCtrl::Open(LPCTSTR url)
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	// TODO: 在此添加调度处理程序代码
-	MFCViewer* view = new MFCViewer(m_hWnd);
-	if (!view->init(url))
-	{
-		delete view;
+	if (!m_Viewer->open(url))
 		return -1;
-	}
-		
 
-	if (m_Viewer)
-	{
-		delete m_Viewer;
-		m_Viewer = NULL;
-	}
-	m_Viewer = view;
-	m_Viewer->start();
 	return 0;
 }

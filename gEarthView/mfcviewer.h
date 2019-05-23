@@ -16,7 +16,10 @@ public:
 public:
 
 	/** 初始化*/
-	bool init(const std::string& file);
+	void init();
+
+	/** 打开节点*/
+	bool open(const std::string& file);
 
 	/** 开始渲染*/
 	void start();
@@ -30,6 +33,9 @@ public:
 	/** 获取osg视窗*/
 	osgViewer::Viewer* getViewer() const { return _viewer; }
 
+	/** 获取根节点*/
+	osg::Group* getRoot() const { return _root; }
+
 	/** 获取MapNode*/
 	osg::Group* getMapNode() const { return _mapnode; }
 
@@ -41,7 +47,7 @@ public:
 
 protected:
 
-	void InitCameraConfig(osg::Node* node);
+	void InitCameraConfig();
 	void frame();
 
 private:
@@ -49,5 +55,6 @@ private:
 	HWND _hWnd;
 	osgViewer::Viewer* _viewer;
 	osgEarth::MapNode* _mapnode;
+	osg::Group* _root;
 	void* _renderthread;
 };
