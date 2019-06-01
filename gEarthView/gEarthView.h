@@ -16,6 +16,10 @@ class CgEarthViewApp : public COleControlModule
 public:
 	BOOL InitInstance();
 	int ExitInstance();
+
+public:
+
+	CString GetOcxPath();
 };
 
 extern const GUID CDECL _tlid;

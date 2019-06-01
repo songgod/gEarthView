@@ -94,16 +94,16 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(GEARTH_3RD_PATH)\osg340\include;$(GEARTH_3RD_PATH)\osgearth2101\include;%(AdditionalIncludeDirectories);$(VcpkgRoot)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(GEARTH_3RD_PATH_X86)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>.\gEarthView.def</ModuleDefinitionFile>
       <OutputFile>$(OutDir)$(ProjectName).ocx</OutputFile>
       <RegisterOutput>true</RegisterOutput>
-      <AdditionalLibraryDirectories>$(GEARTH_3RD_PATH)\osg340\lib\x86\debug;$(GEARTH_3RD_PATH)\osgearth2101\lib\x86\debug;%(AdditionalLibraryDirectories);$(VcpkgRoot)debug\lib;$(VcpkgRoot)debug\lib\manual-link</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(GEARTH_3RD_PATH_X86)\debug\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>osgd.lib;osgviewerd.lib;openthreadsd.lib;osggad.lib;osgdbd.lib;osgEarthd.lib;osgEarthUtild.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>osg130-osgd.dll;osg130-osgDBd.dll;osg130-osgGAd.dll;osg130-osgViewerd.dll;ot20-OpenThreadsd.dll;osgEarthd.dll;osgEarthUtild.dll</DelayLoadDLLs>
     </Link>
@@ -125,16 +125,16 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;_DEBUG;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(GEARTH_3RD_PATH)\osg340\include;$(GEARTH_3RD_PATH)\osgearth2101\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(GEARTH_3RD_PATH_X64)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>.\gEarthView.def</ModuleDefinitionFile>
       <OutputFile>$(OutDir)$(ProjectName).ocx</OutputFile>
       <RegisterOutput>true</RegisterOutput>
-      <AdditionalLibraryDirectories>$(GEARTH_3RD_PATH)\osg340\lib\x64\debug;$(GEARTH_3RD_PATH)\osgearth2101\lib\x64\debug;%(AdditionalLibraryDirectories);$(VcpkgRoot)debug\lib;$(VcpkgRoot)debug\lib\manual-link</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(GEARTH_3RD_PATH_X64)\debug\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>osgd.lib;osgviewerd.lib;openthreadsd.lib;osggad.lib;osgdbd.lib;osgEarthd.lib;osgEarthUtild.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
@@ -157,9 +157,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(GEARTH_3RD_PATH)\osg340\include;$(GEARTH_3RD_PATH)\osgearth2101\include;%(AdditionalIncludeDirectories);$(VcpkgRoot)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(GEARTH_3RD_PATH_X86)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -168,7 +168,7 @@
       <ModuleDefinitionFile>.\gEarthView.def</ModuleDefinitionFile>
       <OutputFile>$(OutDir)$(ProjectName).ocx</OutputFile>
       <RegisterOutput>true</RegisterOutput>
-      <AdditionalLibraryDirectories>$(GEARTH_3RD_PATH)\osg340\lib\x86\release;$(GEARTH_3RD_PATH)\osgearth2101\lib\x86\release;%(AdditionalLibraryDirectories);$(VcpkgRoot)lib;$(VcpkgRoot)lib\manual-link</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(GEARTH_3RD_PATH_X86)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>osg.lib;osgviewer.lib;openthreads.lib;osgga.lib;osgdb.lib;osgEarth.lib;osgEarthUtil.lib;%(AdditionalDependencies);$(VcpkgRoot)lib\*.lib</AdditionalDependencies>
     </Link>
     <Midl>
@@ -191,9 +191,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;NDEBUG;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(GEARTH_3RD_PATH)\osg340\include;$(GEARTH_3RD_PATH)\osgearth2101\include;%(AdditionalIncludeDirectories);$(VcpkgRoot)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(GEARTH_3RD_PATH_X64)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -202,7 +202,7 @@
       <ModuleDefinitionFile>.\gEarthView.def</ModuleDefinitionFile>
       <OutputFile>$(OutDir)$(ProjectName).ocx</OutputFile>
       <RegisterOutput>true</RegisterOutput>
-      <AdditionalLibraryDirectories>$(GEARTH_3RD_PATH)\osg340\lib\x64\release;$(GEARTH_3RD_PATH)\osgearth2101\lib\x64\release;%(AdditionalLibraryDirectories);$(VcpkgRoot)lib;$(VcpkgRoot)lib\manual-link</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(GEARTH_3RD_PATH_X64)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>osg.lib;osgviewer.lib;openthreads.lib;osgga.lib;osgdb.lib;osgEarth.lib;osgEarthUtil.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Midl>
