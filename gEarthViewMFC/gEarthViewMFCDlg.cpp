@@ -66,6 +66,9 @@ BEGIN_MESSAGE_MAP(CgEarthViewMFCDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CgEarthViewMFCDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CgEarthViewMFCDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CgEarthViewMFCDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CgEarthViewMFCDlg::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -167,5 +170,34 @@ void CgEarthViewMFCDlg::OnBnClickedButton1()
 	if (openDlg.DoModal() == IDOK)
 	{
 		m_eView.Open(openDlg.GetPathName());
+	}
+}
+
+
+void CgEarthViewMFCDlg::OnBnClickedButton2()
+{
+	// TODO: Add your control notification handler code here
+	m_eView.Close();
+}
+
+
+void CgEarthViewMFCDlg::OnBnClickedButton3()
+{
+	// TODO: Add your control notification handler code here
+	m_eView.Save();
+}
+
+
+void CgEarthViewMFCDlg::OnBnClickedButton4()
+{
+	// TODO: Add your control notification handler code here
+	CFileDialog openDlg(FALSE, "earth File(*.earth)|*.earth", NULL,
+
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+
+		"earth File(*.earth)|*.earth||", this);
+	if (openDlg.DoModal() == IDOK)
+	{
+		m_eView.SaveAs(openDlg.GetPathName());
 	}
 }

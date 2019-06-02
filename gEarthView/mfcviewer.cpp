@@ -142,7 +142,16 @@ bool MFCViewer::open(const std::string& file)
 	_root->removeChildren(0, _root->getNumChildren());
 	_root->addChild(node);
 	resume();
+	_url = file;
 	return true;
+}
+
+void MFCViewer::clear()
+{
+	pause();
+	_root->removeChildren(0, _root->getNumChildren());
+	_url = "";
+	resume();
 }
 
 void MFCViewer::frame()

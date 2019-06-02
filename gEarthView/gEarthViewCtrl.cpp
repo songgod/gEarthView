@@ -6,6 +6,7 @@
 #include "gEarthViewPropPage.h"
 #include "afxdialogex.h"
 #include <osgDB/ReadFile>
+#include <osgDB/WriteFile>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -28,6 +29,9 @@ BEGIN_DISPATCH_MAP(CgEarthViewCtrl, COleControl)
 	DISP_FUNCTION_ID(CgEarthViewCtrl, "AboutBox", DISPID_ABOUTBOX, AboutBox, VT_EMPTY, VTS_NONE)
 	DISP_FUNCTION_ID(CgEarthViewCtrl, "Flyto", dispidFlyto, Flyto, VT_EMPTY, VTS_R8 VTS_R8 VTS_R8)
 	DISP_FUNCTION_ID(CgEarthViewCtrl, "Open", dispidOpen, Open, VT_I4, VTS_BSTR)
+	DISP_FUNCTION_ID(CgEarthViewCtrl, "Close", dispidClose, Close, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION_ID(CgEarthViewCtrl, "Save", dispidSave, Save, VT_I4, VTS_NONE)
+	DISP_FUNCTION_ID(CgEarthViewCtrl, "SaveAs", dispidSaveAs, SaveAs, VT_I4, VTS_BSTR)
 END_DISPATCH_MAP()
 
 // 事件映射
@@ -208,6 +212,47 @@ LONG CgEarthViewCtrl::Open(LPCTSTR url)
 
 	// TODO: 在此添加调度处理程序代码
 	if (!m_Viewer->open(url))
+		return -1;
+
+	return 0;
+}
+
+
+void CgEarthViewCtrl::Close()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+	// TODO: Add your dispatch handler code here
+	m_Viewer->clear();
+}
+
+
+LONG CgEarthViewCtrl::Save()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+	// TODO: Add your dispatch handler code here
+	osgEarth::MapNode* mapNode = m_Viewer->getMapNode();
+	if (!mapNode)
+		return -1;
+
+	if (!osgDB::writeNodeFile(*mapNode, m_Viewer->getUrl()))
+		return -1;
+
+	return 0;
+}
+
+
+LONG CgEarthViewCtrl::SaveAs(LPCTSTR url)
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+	// TODO: Add your dispatch handler code here
+	osgEarth::MapNode* mapNode = m_Viewer->getMapNode();
+	if (!mapNode)
+		return -1;
+
+	if (!osgDB::writeNodeFile(*mapNode, url))
 		return -1;
 
 	return 0;

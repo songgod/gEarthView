@@ -7,6 +7,7 @@
 #include "gEarthViewMFCDlg.h"
 #include "EarthView.h"
 #include "EarthView.h"
+#include "EarthView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

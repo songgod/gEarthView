@@ -21,6 +21,9 @@ public:
 	/** 打开节点*/
 	bool open(const std::string& file);
 
+	/** 清空节点*/
+	void clear();
+
 	/** 开始渲染*/
 	void start();
 
@@ -37,7 +40,10 @@ public:
 	osg::Group* getRoot() const { return _root; }
 
 	/** 获取MapNode*/
-	osg::Group* getMapNode() const { return _mapnode; }
+	osgEarth::MapNode* getMapNode() const { return _mapnode; }
+
+	/** 获取路径*/
+	const std::string& getUrl() const { return _url; }
 
 	/** 设置背景色*/
 	void setClearColor(const osg::Vec4& color);
@@ -55,6 +61,7 @@ private:
 	HWND _hWnd;
 	osgViewer::Viewer* _viewer;
 	osgEarth::MapNode* _mapnode;
+	std::string _url;
 	osg::Group* _root;
 	void* _renderthread;
 };

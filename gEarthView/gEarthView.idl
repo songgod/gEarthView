@@ -26,6 +26,9 @@ library gEarthViewLib
 			[id(DISPID_ABOUTBOX)] void AboutBox();
 			[id(2)] void Flyto(DOUBLE lat, DOUBLE lng, DOUBLE alt);
 			[id(3)] LONG Open(BSTR url);
+			[id(4)] void Close();
+			[id(5)] LONG Save();
+			[id(6)] LONG SaveAs(BSTR url);
 	};
 
 	//  CgEarthViewCtrl 的事件调度接口

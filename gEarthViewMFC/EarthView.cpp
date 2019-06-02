@@ -1,4 +1,4 @@
-// EarthView.cpp : 由 Microsoft Visual C++ 创建的 ActiveX 控件包装器类的定义
+// EarthView.cpp  : Definition of ActiveX Control wrapper class(es) created by Microsoft Visual C++
 
 
 #include "stdafx.h"
@@ -9,6 +9,6 @@
 
 IMPLEMENT_DYNCREATE(CEarthView, CWnd)
 
-// CEarthView 属性
+// CEarthView properties
 
-// CEarthView 操作
+// CEarthView operations

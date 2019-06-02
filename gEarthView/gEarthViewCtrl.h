@@ -43,19 +43,25 @@ protected:
 
 // 事件映射
 	DECLARE_EVENT_MAP()
+public:
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnDestroy();
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 
 // 调度和事件 ID
 public:
 	enum {
+		dispidSaveAs = 6L,
+		dispidSave = 5L,
+		dispidClose = 4L,
 		dispidOpen = 3L,
 		dispidFlyto = 2L
 	};
 protected:
 	void Flyto(DOUBLE lat, DOUBLE lng, DOUBLE alt);
 	LONG Open(LPCTSTR url);
-public:
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg void OnDestroy();
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	void Close();
+	LONG Save();
+	LONG SaveAs(LPCTSTR url);
 };
 

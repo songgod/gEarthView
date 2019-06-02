@@ -1,4 +1,4 @@
-// EarthView.h : 由 Microsoft Visual C++ 创建的 ActiveX 控件包装器类的声明
+// EarthView.h  : Declaration of ActiveX Control wrapper class(es) created by Microsoft Visual C++
 
 #pragma once
 
@@ -31,10 +31,10 @@ public:
 		pPersist, bStorage, bstrLicKey); 
 	}
 
-// 特性
+// Attributes
 public:
 
-// 操作
+// Operations
 public:
 
 	void AboutBox()
@@ -51,6 +51,23 @@ public:
 		long result;
 		static BYTE parms[] = VTS_BSTR ;
 		InvokeHelper(0x3, DISPATCH_METHOD, VT_I4, (void*)&result, parms, url);
+		return result;
+	}
+	void Close()
+	{
+		InvokeHelper(0x4, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+	}
+	long Save()
+	{
+		long result;
+		InvokeHelper(0x5, DISPATCH_METHOD, VT_I4, (void*)&result, NULL);
+		return result;
+	}
+	long SaveAs(LPCTSTR url)
+	{
+		long result;
+		static BYTE parms[] = VTS_BSTR ;
+		InvokeHelper(0x6, DISPATCH_METHOD, VT_I4, (void*)&result, parms, url);
 		return result;
 	}
 
